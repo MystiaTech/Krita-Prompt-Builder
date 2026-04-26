@@ -1,0 +1,46 @@
+name: Create Release ZIP
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  create-release-zip:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create release ZIP
+        run: |
+          # Create a temporary directory for the plugin structure
+          mkdir -p krita-prompt-builder
+
+          # Copy the plugin files
+          cp prompt_builder.desktop krita-prompt-builder/
+          cp -r prompt_builder krita-prompt-builder/
+
+          # Create the ZIP file
+          zip -r krita-prompt-builder.zip krita-prompt-builder/
+
+          # Verify the ZIP was created
+          ls -lh krita-prompt-builder.zip
+
+      - name: Upload release asset
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: krita-prompt-builder.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifact for manual runs
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: krita-prompt-builder
+          path: krita-prompt-builder.zip
