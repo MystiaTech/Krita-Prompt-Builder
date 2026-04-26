@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=prompt_builder
+X-Python-2-Compatible=false
+Name=Prompt Builder
+Comment=AI prompt builder with tag selection and hex palette challenges
