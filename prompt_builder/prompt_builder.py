@@ -259,17 +259,17 @@ class PromptBuilderDocker(DockWidget):
         main_widget = QWidget()
         main_widget.setStyleSheet("""
             QWidget { background-color: #0d0d0f; color: #dcdcf0;
-                font-family: 'JetBrains Mono', 'Consolas', monospace; font-size: 12px; }
+                font-family: 'JetBrains Mono', 'Consolas', monospace; font-size: 13px; }
             QScrollArea { border: none; background-color: #0d0d0f; }
             QLineEdit { background-color: #13131a; color: #dcdcf0; border: 1px solid #3a3a5c;
-                border-radius: 4px; padding: 5px 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+                border-radius: 4px; padding: 6px 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
             QLineEdit:focus { border-color: #c084fc; }
             QTextEdit { background-color: #0d0d0f; color: #c4b5fd; border: 1px solid #26263a;
-                border-radius: 4px; padding: 6px; font-size: 11px;
+                border-radius: 4px; padding: 8px; font-size: 12px;
                 font-family: 'JetBrains Mono', monospace; }
-            QPushButton { font-family: 'JetBrains Mono', monospace; }
+            QPushButton { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
             QComboBox { background-color: #13131a; color: #dcdcf0; border: 1px solid #3a3a5c;
-                border-radius: 4px; padding: 4px 8px; font-size: 11px; }
+                border-radius: 4px; padding: 5px 10px; font-size: 12px; }
             QComboBox::drop-down { border: none; }
             QComboBox QAbstractItemView { background-color: #13131a; color: #dcdcf0;
                 selection-background-color: #3a3a5c; }
@@ -285,12 +285,12 @@ class PromptBuilderDocker(DockWidget):
 
         left_widget = QWidget()
         self._left_layout = QVBoxLayout(left_widget)
-        self._left_layout.setContentsMargins(14, 14, 14, 14); self._left_layout.setSpacing(10)
+        self._left_layout.setContentsMargins(18, 18, 18, 18); self._left_layout.setSpacing(12)
 
         # Header
         header = QHBoxLayout()
         title = QLabel("Illustrious <span style='color:#c084fc'>·</span> Prompt Builder")
-        title.setStyleSheet("font-size: 13px; font-weight: 600; letter-spacing: 0.08em;")
+        title.setStyleSheet("font-size: 15px; font-weight: 600; letter-spacing: 0.08em;")
         header.addWidget(title); header.addStretch()
 
         self._btn_multi = self._make_tbtn("multi")
@@ -348,15 +348,15 @@ class PromptBuilderDocker(DockWidget):
 
         # ═════ RIGHT PANEL ═════
         right_widget = QWidget()
-        right_widget.setFixedWidth(360)
+        right_widget.setMinimumWidth(480)
         right_widget.setStyleSheet("background-color: #13131a; border-left: 1px solid #26263a;")
         right_layout = QVBoxLayout(right_widget)
-        right_layout.setContentsMargins(12, 12, 12, 12); right_layout.setSpacing(10)
+        right_layout.setContentsMargins(16, 16, 16, 16); right_layout.setSpacing(12)
 
         # Sidebar title
         top_bar = QHBoxLayout()
         sidebar_title = QLabel("Prompt")
-        sidebar_title.setStyleSheet("font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: #818cf8;")
+        sidebar_title.setStyleSheet("font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: #818cf8; font-weight: 500;")
         top_bar.addWidget(sidebar_title); top_bar.addStretch()
         self._tag_count_label = QLabel("0 tags")
         self._tag_count_label.setStyleSheet("font-size: 10px; color: #55557a;")
@@ -405,11 +405,12 @@ class PromptBuilderDocker(DockWidget):
         right_layout.addWidget(self._char_output)
 
         self._pos_display = QWidget()
+        self._pos_display.setMinimumHeight(140)
         self._pos_display.setStyleSheet("""
             QWidget { background-color: #0d0d0f; border: 1px solid rgba(52,211,153,0.2); border-radius: 4px; }
         """)
         self._pos_display_layout = QHBoxLayout(self._pos_display)
-        self._pos_display_layout.setContentsMargins(6, 6, 6, 6); self._pos_display_layout.setSpacing(4)
+        self._pos_display_layout.setContentsMargins(8, 8, 8, 8); self._pos_display_layout.setSpacing(6)
         self._pos_display_layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         right_layout.addWidget(self._pos_display, 1)
 
@@ -451,11 +452,12 @@ class PromptBuilderDocker(DockWidget):
         right_layout.addLayout(neg_row)
 
         self._neg_display = QWidget()
+        self._neg_display.setMinimumHeight(140)
         self._neg_display.setStyleSheet("""
             QWidget { background-color: #0d0d0f; border: 1px solid rgba(248,113,113,0.2); border-radius: 4px; }
         """)
         self._neg_display_layout = QHBoxLayout(self._neg_display)
-        self._neg_display_layout.setContentsMargins(6, 6, 6, 6); self._neg_display_layout.setSpacing(4)
+        self._neg_display_layout.setContentsMargins(8, 8, 8, 8); self._neg_display_layout.setSpacing(6)
         self._neg_display_layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         right_layout.addWidget(self._neg_display, 1)
 
