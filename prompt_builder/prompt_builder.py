@@ -401,7 +401,10 @@ class PromptBuilderDocker(DockWidget):
         right_layout.addLayout(pos_row)
 
         self._char_output = QLineEdit(); self._char_output.setPlaceholderText("character, series...")
-        self._char_output.textChanged.connect(self._rebuild_outputs)
+        self._rebuild_timer = QTimer()
+        self._rebuild_timer.setSingleShot(True)
+        self._rebuild_timer.timeout.connect(self._rebuild_outputs)
+        self._char_output.textChanged.connect(self._on_char_input_changed)
         right_layout.addWidget(self._char_output)
 
         self._pos_display = QWidget()
@@ -666,6 +669,10 @@ class PromptBuilderDocker(DockWidget):
         self._rebuild_outputs()
 
     # ── Output Rendering ────────────────────────────────────────────────────
+
+    def _on_char_input_changed(self):
+        self._rebuild_timer.stop()
+        self._rebuild_timer.start(300)
 
     def _rebuild_outputs(self):
         while self._pos_display_layout.count():

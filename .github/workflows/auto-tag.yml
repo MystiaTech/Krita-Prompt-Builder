@@ -1,0 +1,71 @@
+name: Auto Create Version Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read current version
+        id: current_version
+        run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Bump version
+        id: bump
+        run: |
+          python bump-version.py ${{ inputs.bump_type }}
+          NEW_VERSION=$(cat VERSION)
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Commit and push version update
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add VERSION
+          git commit -m "Bump version: ${{ steps.current_version.outputs.version }} → ${{ steps.bump.outputs.new_version }}"
+          git push
+
+      - name: Create git tag
+        run: |
+          git tag -a v${{ steps.bump.outputs.new_version }} -m "Release v${{ steps.bump.outputs.new_version }}"
+          git push origin v${{ steps.bump.outputs.new_version }}
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v${{ steps.bump.outputs.new_version }} \
+            --title "v${{ steps.bump.outputs.new_version }}" \
+            --notes "Release v${{ steps.bump.outputs.new_version }}" \
+            --draft=false
+
+      - name: Display summary
+        run: |
+          echo "## Version Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Previous version: ${{ steps.current_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- New version: ${{ steps.bump.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Tag: v${{ steps.bump.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
