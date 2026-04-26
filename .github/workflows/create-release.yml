@@ -17,18 +17,14 @@ jobs:
 
       - name: Create release ZIP
         run: |
-          # Create a temporary directory for the plugin structure
-          mkdir -p krita-prompt-builder
+          # Create the ZIP file with correct structure for Krita plugin import
+          # The .desktop file and prompt_builder/ folder must be at the root of the ZIP
+          # so they extract directly into pykrita/ when imported into Krita
+          zip -r krita-prompt-builder.zip prompt_builder.desktop prompt_builder/
 
-          # Copy the plugin files
-          cp prompt_builder.desktop krita-prompt-builder/
-          cp -r prompt_builder krita-prompt-builder/
-
-          # Create the ZIP file
-          zip -r krita-prompt-builder.zip krita-prompt-builder/
-
-          # Verify the ZIP was created
+          # Verify the ZIP was created and has correct structure
           ls -lh krita-prompt-builder.zip
+          unzip -l krita-prompt-builder.zip
 
       - name: Upload release asset
         if: github.event_name == 'release'

@@ -3,10 +3,10 @@ from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QScrollArea, QPushButton,
     QLabel, QLineEdit, QTextEdit, QFrame, QSizePolicy,
     QApplication, QToolButton, QGridLayout, QSpacerItem,
-    QLayout, QRect, QPoint, QLayoutItem, QStyle, QMessageBox,
+    QLayout, QLayoutItem, QStyle, QMessageBox,
     QFileDialog, QInputDialog, QComboBox
 )
-from PyQt5.QtCore import Qt, QSize, pyqtSignal, QTimer
+from PyQt5.QtCore import Qt, QSize, QRect, QPoint, pyqtSignal, QTimer
 from PyQt5.QtGui import QColor, QPalette
 import json
 import os
